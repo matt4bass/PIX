@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #3e8e41;
+}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+/* Adicione um estilo para o h2 */
+h2 {
+  font-family: Arial, sans-serif; /* Aqui você especifica a fonte que deseja */
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h2>Aqui está seu PIX com desconto!</h2>
+
+<button class="button" id="copyButton" onclick="copyText()">Copiar</button>
+<script>
+function copyText() {
+  /* Copie o texto para a área de transferência */
+  navigator.clipboard.writeText
+    ("00020126670014br.gov.bcb.pix0114517214780001410227Algo%20errado?%20(11)95926-45765204000053039865406310.205802BR592551721478%20MATHEUS%20DO%20NASCI6014RIO%20DE%20JANEIRO62230519ReparoNotebookMarli63044FE4");
+
+  // Altere o texto do botão para "Copiado" após o clique
+  var copyButton = document.getElementById("copyButton");
+  copyButton.innerHTML = "Copiado!";
+  copyButton.disabled = true; // Opcional: desabilita o botão após clicar
+}
+</script>
+
+</body>
+</html>
