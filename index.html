@@ -1,64 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-.button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 20px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
+    h1, p {
+      text-align: center;
+      font-family: Tahoma, Geneva, sans-serif;
+    }
 
-.button:hover {
-  background-color: #3e8e41;
-}
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-.button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-/* Adicione um estilo para o h2 */
-h2 {
-  font-family: Arial, sans-serif; /* Aqui você especifica a fonte que deseja */
-  text-align: center;
-}
-</style>
+    #toast {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+    }
+  </style>
+  <title>Chave PIX</title>
 </head>
 <body>
 
-<h2>Aqui está seu PIX com desconto!</h2>
+  <div>
+    <h1>Chave PIX</h1>
+    <p><a href="#" onclick="compartilharLink()">TOQUE PARA COPIAR</a></p>
+  </div>
 
-<button class="button" id="copyButton" onclick="copyText()">Copiar</button>
-<script>
-function copyText() {
-  /* Copie o texto para a área de transferência */
-  navigator.clipboard.writeText
-    ("00020126670014br.gov.bcb.pix0114517214780001410227Algo%20errado?%20(11)95926-45765204000053039865406310.205802BR592551721478%20MATHEUS%20DO%20NASCI6014RIO%20DE%20JANEIRO62230519ReparoNotebookMarli63044FE4");
+  <div id="toast">Link PIX copiado para a Ã¡rea de transferÃªncia!</div>
 
-  // Altere o texto do botão para "Copiado" após o clique
-  var copyButton = document.getElementById("copyButton");
-  copyButton.innerHTML = "Copiado!";
-  copyButton.disabled = true; // Opcional: desabilita o botão após clicar
-}
-</script>
+  <script>
+    function compartilharLink() {
+      var linkPIX = "00020101021126360014br.gov.bcb.pix0114+55119592645765204000053039865406252.005802BR592251721478 M DO N ARAUJO6011CARAPICUIBA62070503***6304DAE0";
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(linkPIX)
+          .then(() => {
+            exibirToast();
+          })
+          .catch((err) => console.error('Erro ao copiar link PIX: ', err));
+      } else {
+        alert('A funcionalidade de Ã¡rea de transferÃªncia nÃ£o Ã© suportada neste dispositivo.');
+      }
+    }
+
+    function exibirToast() {
+      var toast = document.getElementById("toast");
+      toast.style.display = "block";
+      setTimeout(function () {
+        toast.style.display = "none";
+      }, 2000); // Tempo em milissegundos (2 segundos)
+    }
+  </script>
 
 </body>
 </html>
