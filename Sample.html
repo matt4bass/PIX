@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1, p {
+      text-align: center;
+      font-family: Tahoma, Geneva, sans-serif;
+    }
+
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #toast {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: Tahoma, Geneva, sans-serif;
+    }
+  </style>
+  <title>Chave PIX</title>
+</head>
+<body>
+
+  <div>
+    <h1>Chave PIX</h1>
+    <p><a href="#" onclick="compartilharLink()">TOQUE PARA COPIAR</a></p>
+  </div>
+
+  <div id="toast">Link PIX copiado para a Área de transferência!</div>
+
+  <script>
+    function compartilharLink() {
+      var linkPIX = "00020101021126360014br.gov.bcb.pix0114+55119592645765204000053039865406252.005802BR592251721478 M DO N ARAUJO6011CARAPICUIBA62070503***6304DAE0";
+
+      var tempInput = document.createElement("input");
+      tempInput.value = linkPIX;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+
+      exibirToast();
+    }
+
+    function exibirToast() {
+      var toast = document.getElementById("toast");
+      toast.style.display = "block";
+      setTimeout(function () {
+        toast.style.display = "none";
+      }, 2000); // Tempo em milissegundos (2 segundos)
+    }
+  </script>
+
+</body>
+</html>
