@@ -1,78 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diana, Assistente Virtual Grupo Ritmo</title>
+    <style>
+        body {
+            font-family: 'Viga', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    h1, p {
-      text-align: center;
-      font-family: Tahoma, Geneva, sans-serif;
-    }
+        #chat-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 400px;
+            max-width: 100%;
+        }
 
-    a {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        #header {
+            background-color: #DE5535;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
 
-    #toast {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #4CAF50;
-      color: #fff;
-      padding: 15px;
-      border-radius: 5px;
-    }
-  </style>
-  <title>Chave PIX</title>
+        #chat-box {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #user-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        #pergunta {
+            flex-grow: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #enviar {
+            padding: 8px 15px;
+            font-size: 16px;
+            background-color: #DE5535;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #enviar:hover {
+            background-color: #B43C2A;
+        }
+
+        .mensagem {
+            margin-bottom: 10px;
+        }
+
+        .mensagem strong {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
+    <div id="chat-container">
+        <div id="header">
+            <h1>Diana, Assistente Virtual Grupo Ritmo</h1>
+        </div>
+        <div id="chat-box">
+            <div class="mensagem">
+                <p><strong>Diana:</strong> Olá! Eu sou Diana, a assistente virtual do Grupo Ritmo Móveis Planejados. Como posso ajudar você hoje?</p>
+            </div>
+            <div class="mensagem">
+                <p><strong>Diana:</strong> Selecione uma opção de atendimento:</p>
+                <ul id="opcoes">
+                    <li><a href="#" onclick="iniciarAtendimento('empresa')">Sobre a Empresa</a></li>
+                    <li><a href="#" onclick="iniciarAtendimento('lojas')">Nossas Lojas</a></li>
+                    <li><a href="#" onclick="iniciarAtendimento('atendente')">Falar com um Atendente</a></li>
+                    <!-- Adicione outras opções conforme necessário -->
+                </ul>
+            </div>
+        </div>
+        <div id="user-input">
+            <input type="text" id="pergunta" placeholder="Faça sua pergunta..." required onkeydown="enviarComEnter(event)">
+            <button id="enviar" onclick="enviarPergunta()">Enviar</button>
+        </div>
+    </div>
 
-  <div>
-    <h1>Chave PIX</h1>
-    <p><a href="#" onclick="compartilharLink()">TOQUE PARA COPIAR</a></p>
-  </div>
+    <script>
+        function enviarPergunta() {
+            var pergunta = document.getElementById('pergunta').value;
+            var chatBox = document.getElementById('chat-box');
 
-  <div id="toast">Link PIX copiado para a Ã¡rea de transferÃªncia!</div>
+            var perguntaHtml = '<div class="mensagem"><p><strong>Você:</strong> ' + pergunta + '</p></div>';
+            chatBox.innerHTML += perguntaHtml;
 
-  <script>
-    function compartilharLink() {
-      var linkPIX = "00020101021126360014br.gov.bcb.pix0114+55119592645765204000053039865406252.005802BR592251721478 M DO N ARAUJO6011CARAPICUIBA62070503***6304DAE0";
+            document.getElementById('pergunta').value = '';
 
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(linkPIX)
-          .then(() => {
-            exibirToast();
-          })
-          .catch((err) => console.error('Erro ao copiar link PIX: ', err));
-      } else {
-        alert('A funcionalidade de Ã¡rea de transferÃªncia nÃ£o Ã© suportada neste dispositivo.');
-      }
-    }
+            fetch('https://us-central1-vp-consultoria.cloudfunctions.net/function-1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    pergunta: pergunta,
+                }),
+            })
+            .then(response => response.json())
+            .then(resposta => {
+                if (resposta.resposta) {
+                    var respostaHtml = '<div class="mensagem"><p><strong>Diana:</strong> ' + resposta.resposta + '</p></div>';
+                    chatBox.innerHTML += respostaHtml;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                } else {
+                    console.error('Resposta da Cloud Function vazia ou indefinida.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao enviar pergunta para a Cloud Function:', error);
+            });
+        }
 
-    function exibirToast() {
-      var toast = document.getElementById("toast");
-      toast.style.display = "block";
-      setTimeout(function () {
-        toast.style.display = "none";
-      }, 2000); // Tempo em milissegundos (2 segundos)
-    }
-  </script>
+        function enviarComEnter(event) {
+            if (event.key === 'Enter') {
+                enviarPergunta();
+            }
+        }
 
+        function iniciarAtendimento(opcao) {
+            var atendimentoInicial = '';
+
+            if (opcao === 'empresa') {
+                atendimentoInicial = '<div class="mensagem"><p><strong>Você:</strong> Sobre a Empresa</p>';
+                atendimentoInicial += '<p><strong>Diana:</strong> Somos o Grupo Ritmo Móveis Planejados. Como posso ajudar você?</p></div>';
+            } else if (opcao === 'lojas') {
+                atendimentoInicial = '<div class="mensagem"><p><strong>Você:</strong> Nossas Lojas</p>';
+                atendimentoInicial += '<p><strong>Diana:</strong> Nossas lojas estão localizadas em:</p>';
+                // Adicione a lista de lojas aqui
+            } else if (opcao === 'atendente') {
+                atendimentoInicial = '<div class="mensagem"><p><strong>Você:</strong> Falar com um Atendente</p>';
+                atendimentoInicial += '<p><strong>Diana:</strong> Nossa equipe de atendimento está pronta para ajudar. Como posso ajudar você hoje?</p></div>';
+            }
+
+            var chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += atendimentoInicial;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
 </body>
 </html>
